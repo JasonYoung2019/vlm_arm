@@ -21,10 +21,13 @@ def record(MIC_INDEX=0, DURATION=5):
     DURATION，录音时长
     '''
     print('开始 {} 秒录音'.format(DURATION))
-    os.system('sudo arecord -D "plughw:{}" -f dat -c 1 -r 16000 -d {} temp/speech_record.wav'.format(MIC_INDEX, DURATION))
+    # re_cmd = 'arecord -D "plughw:{},0" -f dat -c 1 -r 16000 -d {} agent_demo_20240527/temp/speech_record.wav'.format(MIC_INDEX, DURATION)
+    re_cmd = 'arecord -f dat -c 1 -r 16000 -d {} agent_demo_20240527/temp/speech_record.wav'.format(DURATION)
+    print('执行命令：', re_cmd)
+    os.system(re_cmd)
     print('录音结束')
 
-def record_auto(MIC_INDEX=1):
+def record_auto(MIC_INDEX=0):
     '''
     开启麦克风录音，保存至'temp/speech_record.wav'音频文件
     音量超过阈值自动开始录音，低于阈值一段时间后自动停止录音
@@ -99,7 +102,7 @@ def record_auto(MIC_INDEX=1):
                     quiet_flag = False
                     last_ok_time = temp_time
                     
-        # print('当前帧 {} 音量 {}'.format(temp_time+1, temp_volume))
+        print('当前帧 {} 音量 {}'.format(temp_time+1, temp_volume))
         temp_time += 1
         if temp_time > 150:  # 超时直接退出
             END_TIME = temp_time
